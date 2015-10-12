@@ -214,10 +214,10 @@ namespace glm
 
 	template <typename T, precision P>
 	template <typename U>
-	GLM_FUNC_QUALIFIER tvec2<T, P> & tvec2<T, P>::operator*=(U s)
+	GLM_FUNC_QUALIFIER tvec2<T, P> & tvec2<T, P>::operator*=(U v)
 	{
-		this->x *= static_cast<T>(s);
-		this->y *= static_cast<T>(s);
+		this->x *= static_cast<T>(v);
+		this->y *= static_cast<T>(v);
 		return *this;
 	}
 
