@@ -71,19 +71,22 @@ namespace detail
 		typedef fmat4x4SIMD type;
 		typedef fmat4x4SIMD transpose_type;
 
+		typedef tmat4x4<float, defaultp> pure_type;
+		typedef tvec4<float, defaultp> pure_row_type;
+		typedef tvec4<float, defaultp> pure_col_type;
+		typedef tmat4x4<float, defaultp> pure_transpose_type;
+
 #		ifdef GLM_META_PROG_HELPERS
-#			if GLM_HAS_CONSTEXPR
-				static GLM_CONSTEXPR length_t components = 4;
-				static GLM_CONSTEXPR length_t cols = 4;
-				static GLM_CONSTEXPR length_t rows = 4;
-				static GLM_CONSTEXPR precision prec = defaultp;
-#			else
-				static const length_t components = 4;
-				static const length_t cols = 4;
-				static const length_t rows = 4;
-				static const precision prec = defaultp;
-#			endif//GLM_HAS_CONSTEXPR
+			static GLM_RELAXED_CONSTEXPR length_t components = 4;
+			static GLM_RELAXED_CONSTEXPR length_t cols = 4;
+			static GLM_RELAXED_CONSTEXPR length_t rows = 4;
+			static GLM_RELAXED_CONSTEXPR precision prec = defaultp;
 #		endif//GLM_META_PROG_HELPERS
+
+#		ifdef GLM_STATIC_CONST_MEMBERS
+			static const type ZERO;
+			static const type IDENTITY;
+#		endif
 
 		GLM_FUNC_DECL length_t length() const;
 
@@ -92,7 +95,7 @@ namespace detail
 		//////////////////////////////////////
 		// Constructors
 
-		fmat4x4SIMD();
+		fmat4x4SIMD() GLM_DEFAULT_CTOR;
 		explicit fmat4x4SIMD(float const & s);
 		explicit fmat4x4SIMD(
 			float const & x0, float const & y0, float const & z0, float const & w0,
@@ -127,7 +130,7 @@ namespace detail
 		fvec4SIMD const & operator[](length_t i) const;
 
 		// Unary updatable operators
-		fmat4x4SIMD & operator= (fmat4x4SIMD const & m);
+		fmat4x4SIMD & operator= (fmat4x4SIMD const & m) GLM_DEFAULT;
 		fmat4x4SIMD & operator+= (float const & s);
 		fmat4x4SIMD & operator+= (fmat4x4SIMD const & m);
 		fmat4x4SIMD & operator-= (float const & s);

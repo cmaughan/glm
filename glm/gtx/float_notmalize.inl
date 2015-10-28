@@ -24,58 +24,20 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 ///
-/// @file test/gtc/gtc_color.cpp
-/// @date 2015-02-10 / 2015-02-10
+/// @ref gtx_float_normalize
+/// @file glm/gtx/float_normalize.inl
+/// @date 2015-09-25 / 2015-09-25
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#include <glm/gtc/color.hpp>
-#include <glm/gtc/epsilon.hpp>
-#include <glm/gtc/constants.hpp>
+#include <limits>
 
-namespace srgb
+namespace glm
 {
-	int test()
+	template <typename T, precision P, template <typename, precision> class vecType>
+	GLM_FUNC_QUALIFIER vecType<float, P> floatNormalize(vecType<T, P> const & v)
 	{
-		int Error(0);
-
-		glm::vec3 const ColorSourceRGB(1.0, 0.5, 0.0);
-
-		{
-			glm::vec3 const ColorSRGB = glm::convertRgbToSrgb(ColorSourceRGB);
-			glm::vec3 const ColorRGB = glm::convertSrgbToRgb(ColorSRGB);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGB, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		{
-			glm::vec3 const ColorSRGB = glm::convertRgbToSrgb(ColorSourceRGB, 2.8f);
-			glm::vec3 const ColorRGB = glm::convertSrgbToRgb(ColorSRGB, 2.8f);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGB, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		glm::vec4 const ColorSourceRGBA(1.0, 0.5, 0.0, 1.0);
-
-		{
-			glm::vec4 const ColorSRGB = glm::convertRgbToSrgb(ColorSourceRGBA);
-			glm::vec4 const ColorRGB = glm::convertSrgbToRgb(ColorSRGB);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGBA, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		{
-			glm::vec4 const ColorSRGB = glm::convertRgbToSrgb(ColorSourceRGBA, 2.8f);
-			glm::vec4 const ColorRGB = glm::convertSrgbToRgb(ColorSRGB, 2.8f);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGBA, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		return Error;
+		return vecType<float, P>(v) / static_cast<float>(std::numeric_limits<T>::max());
 	}
-}//namespace srgb
 
-int main()
-{
-	int Error(0);
-
-	Error += srgb::test();
-
-	return Error;
-}
+}//namespace glm

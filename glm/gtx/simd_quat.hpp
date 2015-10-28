@@ -69,21 +69,16 @@ namespace detail
 {
 	GLM_ALIGNED_STRUCT(16) fquatSIMD
 	{
-		typedef __m128 value_type;
+		typedef float value_type;
 		typedef std::size_t size_type;
-		static size_type value_size();
 
 		typedef fquatSIMD type;
 		typedef tquat<bool, defaultp> bool_type;
+		typedef tquat<float, defaultp> pure_type;
 
 #		ifdef GLM_META_PROG_HELPERS
-#			if GLM_HAS_CONSTEXPR
-				static GLM_CONSTEXPR length_t components = 4;
-				static GLM_CONSTEXPR precision prec = defaultp;
-#			else
-				static const length_t components = 4;
-				static const precision prec = defaultp;
-#			endif//GLM_HAS_CONSTEXPR
+			static GLM_RELAXED_CONSTEXPR length_t components = 4;
+			static GLM_RELAXED_CONSTEXPR precision prec = defaultp;
 #		endif//GLM_META_PROG_HELPERS
 
 #ifdef GLM_SIMD_ENABLE_XYZW_UNION
@@ -96,12 +91,32 @@ namespace detail
 		__m128 Data;
 #endif
 
+#		ifdef GLM_STATIC_CONST_MEMBERS
+		static const type ZERO;
+		static const type IDENTITY;
+		static const type X;
+		static const type Y;
+		static const type Z;
+		static const type W;
+		static const type XY;
+		static const type XZ;
+		static const type XW;
+		static const type YZ;
+		static const type YW;
+		static const type ZW;
+		static const type XYZ;
+		static const type XYW;
+		static const type XZW;
+		static const type YZW;
+		static const type XYZW;
+#		endif
+
 		//////////////////////////////////////
 		// Implicit basic constructors
 
-		fquatSIMD();
+		fquatSIMD() GLM_DEFAULT_CTOR;
+		fquatSIMD(fquatSIMD const & q) GLM_DEFAULT;
 		fquatSIMD(__m128 const & Data);
-		fquatSIMD(fquatSIMD const & q);
 
 		//////////////////////////////////////
 		// Explicit basic constructors
@@ -122,7 +137,7 @@ namespace detail
 		//////////////////////////////////////
 		// Unary arithmetic operators
 
-		fquatSIMD& operator =(fquatSIMD const & q);
+		fquatSIMD& operator= (fquatSIMD const & q) GLM_DEFAULT;
 		fquatSIMD& operator*=(float const & s);
 		fquatSIMD& operator/=(float const & s);
 	};

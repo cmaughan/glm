@@ -92,21 +92,16 @@ namespace detail
 	/// \ingroup gtx_simd_vec4
 	GLM_ALIGNED_STRUCT(16) fvec4SIMD
 	{
-		typedef __m128 value_type;
+		typedef float value_type;
 		typedef std::size_t size_type;
-		static size_type value_size();
 
 		typedef fvec4SIMD type;
+		typedef tvec4<float, defaultp> pure_type;
 		typedef tvec4<bool, highp> bool_type;
 
 #		ifdef GLM_META_PROG_HELPERS
-#			if GLM_HAS_CONSTEXPR
-				static GLM_CONSTEXPR length_t components = 4;
-				static GLM_CONSTEXPR precision prec = defaultp;
-#			else
-				static const length_t components = 4;
-				static const precision prec = defaultp;
-#			endif//GLM_HAS_CONSTEXPR
+			static GLM_RELAXED_CONSTEXPR length_t components = 4;
+			static GLM_RELAXED_CONSTEXPR precision prec = defaultp;
 #		endif//GLM_META_PROG_HELPERS
 
 #ifdef GLM_SIMD_ENABLE_XYZW_UNION
@@ -119,12 +114,31 @@ namespace detail
 		__m128 Data;
 #endif
 
+#		ifdef GLM_STATIC_CONST_MEMBERS
+		static const type ZERO;
+		static const type X;
+		static const type Y;
+		static const type Z;
+		static const type W;
+		static const type XY;
+		static const type XZ;
+		static const type XW;
+		static const type YZ;
+		static const type YW;
+		static const type ZW;
+		static const type XYZ;
+		static const type XYW;
+		static const type XZW;
+		static const type YZW;
+		static const type XYZW;
+#		endif
+
 		//////////////////////////////////////
 		// Implicit basic constructors
 
-		fvec4SIMD();
+		fvec4SIMD() GLM_DEFAULT_CTOR;
+		fvec4SIMD(fvec4SIMD const & v) GLM_DEFAULT;
 		fvec4SIMD(__m128 const & Data);
-		fvec4SIMD(fvec4SIMD const & v);
 
 		//////////////////////////////////////
 		// Explicit basic constructors
@@ -155,7 +169,7 @@ namespace detail
 		//////////////////////////////////////
 		// Unary arithmetic operators
 
-		fvec4SIMD& operator= (fvec4SIMD const & v);
+		fvec4SIMD& operator= (fvec4SIMD const & v) GLM_DEFAULT;
 		fvec4SIMD& operator+=(fvec4SIMD const & v);
 		fvec4SIMD& operator-=(fvec4SIMD const & v);
 		fvec4SIMD& operator*=(fvec4SIMD const & v);
@@ -172,15 +186,15 @@ namespace detail
 		//////////////////////////////////////
 		// Swizzle operators
 
-		template <comp X, comp Y, comp Z, comp W>
+		template <comp X_, comp Y_, comp Z_, comp W_>
 		fvec4SIMD& swizzle();
-		template <comp X, comp Y, comp Z, comp W>
+		template <comp X_, comp Y_, comp Z_, comp W_>
 		fvec4SIMD swizzle() const;
-		template <comp X, comp Y, comp Z>
+		template <comp X_, comp Y_, comp Z_>
 		fvec4SIMD swizzle() const;
-		template <comp X, comp Y>
+		template <comp X_, comp Y_>
 		fvec4SIMD swizzle() const;
-		template <comp X>
+		template <comp X_>
 		fvec4SIMD swizzle() const;
 	};
 }//namespace detail

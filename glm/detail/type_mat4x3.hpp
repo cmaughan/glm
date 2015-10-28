@@ -51,27 +51,25 @@ namespace glm
 		typedef T value_type;
 
 #		ifdef GLM_META_PROG_HELPERS
-#			if GLM_HAS_CONSTEXPR
-				static GLM_CONSTEXPR length_t components = 4;
-				static GLM_CONSTEXPR length_t cols = 3;
-				static GLM_CONSTEXPR length_t rows = 4;
-				static GLM_CONSTEXPR precision prec = P;
-#			else
-				static const length_t components = 4;
-				static const length_t cols = 3;
-				static const length_t rows = 4;
-				static const precision prec = P;
-#			endif//GLM_HAS_CONSTEXPR
+			static GLM_RELAXED_CONSTEXPR length_t components = 4;
+			static GLM_RELAXED_CONSTEXPR length_t cols = 4;
+			static GLM_RELAXED_CONSTEXPR length_t rows = 3;
+			static GLM_RELAXED_CONSTEXPR precision prec = P;
 #		endif//GLM_META_PROG_HELPERS
 
+#		ifdef GLM_STATIC_CONST_MEMBERS
+			static const type ZERO;
+			static const type IDENTITY;
+#		endif
+
 	private:
-		// Data
 		col_type value[4];
 
 	public:
-		// Constructors
-		GLM_FUNC_DECL tmat4x3();
-		GLM_FUNC_DECL tmat4x3(tmat4x3<T, P> const & m);
+		// -- Constructors --
+
+		GLM_FUNC_DECL tmat4x3() GLM_DEFAULT_CTOR;
+		GLM_FUNC_DECL tmat4x3(tmat4x3<T, P> const & m) GLM_DEFAULT;
 		template <precision Q>
 		GLM_FUNC_DECL tmat4x3(tmat4x3<T, Q> const & m);
 
@@ -88,8 +86,7 @@ namespace glm
 			col_type const & v2,
 			col_type const & v3);
 
-		//////////////////////////////////////
-		// Conversions
+		// -- Conversions --
 
 		template <
 			typename X1, typename Y1, typename Z1,
@@ -109,16 +106,10 @@ namespace glm
 			tvec3<V3, P> const & v3,
 			tvec3<V4, P> const & v4);
 
-		//////////////////////////////////////
-		// Matrix conversions
+		// -- Matrix conversions --
 
-#		ifdef GLM_FORCE_EXPLICIT_CTOR
-			template <typename U, precision Q>
-			GLM_FUNC_DECL explicit tmat4x3(tmat4x3<U, Q> const & m);
-#		else
-			template <typename U, precision Q>
-			GLM_FUNC_DECL tmat4x3(tmat4x3<U, Q> const & m);
-#		endif
+		template <typename U, precision Q>
+		GLM_FUNC_DECL GLM_EXPLICIT tmat4x3(tmat4x3<U, Q> const & m);
 
 		GLM_FUNC_DECL explicit tmat4x3(tmat2x2<T, P> const & x);
 		GLM_FUNC_DECL explicit tmat4x3(tmat3x3<T, P> const & x);
@@ -129,8 +120,7 @@ namespace glm
 		GLM_FUNC_DECL explicit tmat4x3(tmat4x2<T, P> const & x);
 		GLM_FUNC_DECL explicit tmat4x3(tmat3x4<T, P> const & x);
 
-		//////////////////////////////////////
-		// Accesses
+		// -- Accesses --
 
 #		ifdef GLM_FORCE_SIZE_FUNC
 			typedef size_t size_type;
@@ -146,10 +136,9 @@ namespace glm
 			GLM_FUNC_DECL col_type const & operator[](length_type i) const;
 #		endif//GLM_FORCE_SIZE_FUNC
 
-		//////////////////////////////////////
-		// Unary arithmetic operators
+		// -- Unary arithmetic operators --
 
-		GLM_FUNC_DECL tmat4x3<T, P> & operator=(tmat4x3<T, P> const & m);
+		GLM_FUNC_DECL tmat4x3<T, P> & operator=(tmat4x3<T, P> const & m) GLM_DEFAULT;
 
 		template <typename U>
 		GLM_FUNC_DECL tmat4x3<T, P> & operator=(tmat4x3<U, P> const & m);
@@ -166,8 +155,7 @@ namespace glm
 		template <typename U>
 		GLM_FUNC_DECL tmat4x3<T, P> & operator/=(U s);
 
-		//////////////////////////////////////
-		// Increment and decrement operators
+		// -- Increment and decrement operators --
 
 		GLM_FUNC_DECL tmat4x3<T, P> & operator++();
 		GLM_FUNC_DECL tmat4x3<T, P> & operator--();
@@ -175,7 +163,16 @@ namespace glm
 		GLM_FUNC_DECL tmat4x3<T, P> operator--(int);
 	};
 
-	// Binary operators
+	// -- Unary operators --
+
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x3<T, P> operator+(tmat4x3<T, P> const & m);
+
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x3<T, P> operator-(tmat4x3<T, P> const & m);
+
+	// -- Binary operators --
+
 	template <typename T, precision P>
 	GLM_FUNC_DECL tmat4x3<T, P> operator+(tmat4x3<T, P> const & m, T const & s);
 
@@ -215,9 +212,23 @@ namespace glm
 	template <typename T, precision P>
 	GLM_FUNC_DECL tmat4x3<T, P> operator/(T const & s, tmat4x3<T, P> const & m);
 
-	// Unary constant operators
+	// -- Boolean operators --
+
 	template <typename T, precision P>
-	GLM_FUNC_DECL tmat4x3<T, P> const operator-(tmat4x3<T, P> const & m);
+	GLM_FUNC_DECL bool operator==(tmat4x3<T, P> const & m1, tmat4x3<T, P> const & m2);
+
+	template <typename T, precision P>
+	GLM_FUNC_DECL bool operator!=(tmat4x3<T, P> const & m1, tmat4x3<T, P> const & m2);
+
+	// -- Is type --
+
+	template <typename T, precision P>
+	struct type<T, P, tmat4x3>
+	{
+		static bool const is_vec = false;
+		static bool const is_mat = true;
+		static bool const is_quat = false;
+	};
 }//namespace glm
 
 #ifndef GLM_EXTERNAL_TEMPLATE
